@@ -128,7 +128,7 @@ class DatabaseStorage(Storage):
         """
         assert mode == 'rb', "DatabaseStorage open mode must be 'rb'."
 
-        query = 'SELECT %(data_column)s FROM %(table)s ' + \
+        query = 'SELECT %(data_column)s, %(size_column)s FROM %(table)s ' + \
                 'WHERE %(name_column)s = %%s'
         query %= self.__dict__
         cursor = connection.cursor()
@@ -140,6 +140,7 @@ class DatabaseStorage(Storage):
         inMemFile = StringIO.StringIO(base64.b64decode(row[0]))
         inMemFile.name = name
         inMemFile.mode = mode
+        inMemFile.size = row[1]
 
         return File(inMemFile)
 

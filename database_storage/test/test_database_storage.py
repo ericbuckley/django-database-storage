@@ -68,6 +68,13 @@ class TestSequenceFunctions(unittest.TestCase):
         storage._save(name, self._wrap_content(content))
         self.assertEqual(storage._open(name).read(), content)
 
+    def test_open_with_size(self):
+        name = 'foo.bin'
+        content = self._get_binary_data(10 * 1024)
+        storage = DatabaseStorage(DEFAULT_OPTIONS)
+        storage._save(name, self._wrap_content(content))
+        self.assertEqual(storage._open(name).size, 10 * 1024)
+
     def test_overwrite(self):
         "Overwrite a file with new content, verify it updates correctly."
         name = 'foo.bin'
